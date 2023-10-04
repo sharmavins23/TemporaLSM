@@ -7,3 +7,6 @@ __pycache__
 *.fls
 *.gz
 *.fdb_latexmk
+
+# Any .ipynb files for testing purposes should be in /scratch
+scratch
