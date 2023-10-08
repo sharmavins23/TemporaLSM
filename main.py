@@ -17,6 +17,8 @@ def main():
     # Computation will probably still be fairly slow, as the GPU is not nearly
     #  saturated by any of these matrix operations
 
+    # TODO: Run the TLSM on the dataset
+
 
 if __name__ == '__main__':
     main()

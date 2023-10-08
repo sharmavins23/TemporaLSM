@@ -1,4 +1,5 @@
 # Contains functions for generating seed matrices
+import networkx as nx
 import torch
 
 # Notes on creating good adjacency matrices:
@@ -39,8 +40,41 @@ def erdosRenyi(n: int, p: float) -> torch.Tensor:
     potentialMatrix: torch.Tensor = torch.bernoulli(torch.full((n, n), p))
     # Remove any autaptic loops while keeping values in {0, 1}
     erdosRenyi = potentialMatrix - (torch.eye(n) * potentialMatrix)
+
     return erdosRenyi
 
+
+def wattsStrogatz(n: int, p: float, k: int) -> torch.Tensor:
+    """
+    Creates a Watts-Strogatz Small World random graph.
+
+    n: Number of nodes
+    p: Probability of an edge being rewired
+    k: Number of edges in base lattice
+    """
+    G = nx.watts_strogatz_graph(n, k, p)
+    watts_strogatz = torch.from_numpy(nx.to_numpy_array(G))
+    return watts_strogatz
+
+# TODO: Barabasi-Albert
+
+
+def barabasiAlbert(n: int, m: int):
+    """
+    Creates a Barabasi-Albert random graph.
+
+    n: Number of nodes
+    m: 
+    """
+    G = nx.barabasi_albert_graph(n, m)
+    barabasi_albert = torch.from_numpy(nx.to_numpy_array(G))
+    return barabasi_albert
+
+
+# TODO: Exponential Random (Google ERGM)
+# TODO: Random Geometric Graph
+# TODO: Configuration
+# TODO: Random Key Graph
 
 # ===== Tester functions =======================================================
 

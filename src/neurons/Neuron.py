@@ -8,11 +8,15 @@ from src.neurons.NeuronTypes import NeuronType
 
 class Neuron:
     @abstractmethod
-    def __init__(self, threshold: int, inputSize: int):
+    def __init__(self, threshold: int, inputVectorSize: int):
         self.threshold = threshold
 
     @abstractmethod
     def __call__(self, inputVector: torch.Tensor) -> bool:
+        pass
+
+    @abstractmethod
+    def resetForNextQuanta(self):
         pass
 
     @abstractmethod
