@@ -1,1 +1,36 @@
-\section{Introduction}
+\section{Introduction} \label{sec:Introduction}
+
+\subsection{Motivation}
+
+The portion of the brain primarily responsible for human thought and cognitive
+function is thought to be the neocortex, which covers the outside shell. The
+unfolded neocortex is the size of a dinner napkin, and is made up of tiny
+perpendicular 'micro-fibers' called cortical columns \cite{Mountcastle}.
+
+Cortical columns are thought to be the microcircuit that implements all
+cognitive thought. Though it is well documented that different regions of the
+brain are responsible for different functions, it has been shown \cite{Hawkins}
+that the makeup of the cortical column is nearly identical across the entire
+neocortex, excluding the inputs. This indicates that a circuit exists that can
+be plugged into different problems and solve all of them without significant
+modification or significant power consumption.
+
+One approach to designing such a 'perfect' circuit is through induction. In
+section \ref{sec:PreviousWork}, we'll discuss this approach in more detail, and
+why we are not choosing it. However, another approach is from a top down - We
+hope to generate networks that can solve a variety of problems, look at these
+networks, and attempt to understand what similarities exist between them or how
+different parameters and problem-specific features affect their design.
+
+\subsection{General Approach}
+
+We start by generating a framework to quickly and easily 'plug in' different
+datasets and generate networks. These networks can organize themselves based on
+features of the data, and we can analyze how they organize themselves over time.
+
+Once we have a framework that can handle this, we aim to introduce a series of
+unique problems and analyze how individual neurons in a network may connect.
+Ideally, we can draw significant conclusions about the influence of various
+parameters, and maybe even find similarities. These similarities and conclusions
+can serve as the first steps in constructing a cortical column-like neural
+circuit.

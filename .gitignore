@@ -2,11 +2,12 @@
 __pycache__
 
 # Latex temporary files
-*.aux
-*.log
-*.fls
-*.gz
-*.fdb_latexmk
+docs/*.aux
+docs/*.log
+docs/*.fls
+docs/*.gz
+docs/*.out
+docs/*.fdb_latexmk
 
 # Any .ipynb files for testing purposes should be in /scratch
 scratch

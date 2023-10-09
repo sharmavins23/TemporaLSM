@@ -1,0 +1,60 @@
+\section{Previous Work} \label{sec:PreviousWork}
+
+In this section we examine inspirations for our approach, and potential choices.
+
+\subsection{Smith (2023)}
+
+As discussed in \ref{sec:Introduction}, the goal of this project is to get
+closer to a cortical column-like neural circuit. Professor Smith's rendition of
+his macrocolumn in \cite{Macrocolumn} is an example of the ground-up approach to
+solving this problem. He proposes a circuit specialized towards one task -
+Having a mouse navigate a maze. Future work in this project involves applying
+a slightly modified circuit to another problem.
+
+One major issue with this avenue of thought is the exponentially increasing
+amount of effort. In future work, when introducing a new problem, Professor
+Smith now has to modify the circuit to solve the new problem while still
+preserving the old functionality. As such, we aim to avoid this approach, and
+instead take a top-down approach to generalize further.
+
+\subsection{Nair, Shen, Smith (2021)}
+
+This paper \cite{TNN} describes the temporal neuron and a strategy for training
+it in an unsupervised way. The temporal neuron simply encodes data inputs on
+spike timing lines (in a process known as rate coding). This allows it to
+consume significantly less power (as the spike is only on instantaneously), and
+also allows for a non-statistical simple unsupervised approach.
+
+For our approach, we implement these temporal neurons, but use them without the
+paper's described 'columnar' structure (for the most part). As such, our usage
+of temporal neurons is novelly applied in a more arbitrary network structure.
+
+\subsection{Purdy (2016)}
+
+Purdy's paper \cite{Encoding} discusses the best-practices for encoding data in
+temporal systems, such as we will throughout this project. He focuses on the
+generation of proper sparse distributed representation (SDR) matrices as
+good-for-encoding inputs. We apply this knowledge to adapt datasets to temporal
+input.
+
+\subsection{Maass (2011)}
+
+Maass defines the liquid state machine (LSM) \cite{LSM} model for reservoir
+computing. The LSM has a reservoir with a series of spiking neurons that form
+some arbitrary excitation pattern; A separate set of (trained) neurons then read
+out this pattern and correlate it to an output. The internals of the reservoir
+can be structured in any way, but are conceptually similar to self-organizing
+maps \cite{Kohonen}.
+
+Kohonen posits, through his work, that arbitrary higher dimensional features of
+a problem are encoded into the graph's organization for a self-organizing map.
+As such, we analyze the organization of the reservoirs in order to draw
+possible conclusions about the features of the problem.
+
+\subsection{Hazan, Manevitz (2012)}
+
+Hazan and Manevitz \cite{LSM Constraints} propose in their paper that the LSM
+previously defined by Maass is not a good model due to its network's robustness,
+and that a more robust model would better represent the brain. They draw a new
+conclusion towards small-world assumptions in graph topology being key to
+solving this problem. We re-test this hypothesis in our work.
