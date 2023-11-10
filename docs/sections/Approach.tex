@@ -20,31 +20,6 @@ Finally, we generate and analyze a network for the NFL Big Data Bowl dataset
 \cite{NFL Dataset}. This network would perform prediction for the next 'play'
 (e.g. pass or rush) based on the previous play's characteristics.
 
-\subsection{Network Configuration}
-
-Before discussing our network, we introduce our system. We define a temporal
-liquid state machine (TLSM) as an input vector, encoded in time-based spikes,
-followed by a reservoir of temporal neurons, and finally a singular output
-column (with winner-takes-all lateral inhibition). The input vector uses
-encoding strategies discussed in \cite{Encoding}, and the output column is
-identical to the one described in \cite{TNN}.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.25]{tlsm_diagram.png}
-    \caption{Diagram of a temporal liquid state machine (TLSM).}
-    \label{fig:tlsm_diagram}
-\end{figure}
-
-The reservoir is the focus of network analysis, containing a series of neurons.
-This graph of neurons will change over time with training and with STDP rules,
-adding and removing connections arbitrarily in response to the inputs. The
-neuron activation function is also a hyperparameter of the network.
-
-Furthermore, a 'seed' configuration for the network may be specified, indicating
-its initial connectivity. This seed configuration is generated through a
-number of random graph algorithms, and is a hyperparameter of the network.
-
 \subsection{Assumptions}
 
 While we vary a variety of parameters (such as neuron activation function), we
