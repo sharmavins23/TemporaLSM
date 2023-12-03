@@ -1,19 +1,29 @@
 import torch
+from icecream import ic
 
 
 class Neuron:
-    def __init__(self, numIVInputs: int, numNeighbors: int):
+    def __init__(
+        self,
+        numIVInputs: int,
+        numNeighbors: int,
+        neighborWeightEnable: torch.Tensor,
+        wMaxExp: int = 3,
+        thetaScaleFactor: float = 0.1,
+        uCaptureExp: int = 2,
+        uBackoffExp: int = 2,
+        uSearchExp: int = 10
+    ):
         # * Parameters!
         self.wMin = 0  # This is not a true parameter
-        self.wMax = 2 ** 3
-        self.thetaScaleFactor = 0.1
+        self.wMax = 2 ** wMaxExp
         self.theta = max(
             int(self.wMax * (numIVInputs + numNeighbors) * thetaScaleFactor),
             1
         )
-        self.uCapture = 1 / 2
-        self.uBackoff = 1 / 2
-        self.uSearch = 1 / 1024
+        self.uCapture = 1 / (2 ** uCaptureExp)
+        self.uBackoff = 1 / (2 ** uBackoffExp)
+        self.uSearch = 1 / (2 ** uSearchExp)
 
         self.numIVInputs = numIVInputs
         self.numNeighbors = numNeighbors
@@ -41,26 +51,31 @@ class Neuron:
             self.wMax,
             (numNeighbors,)
         )
+        # Only enable the weights specified in the seed adjacency matrix
+        self.neighborWeights *= neighborWeightEnable.long()
 
-    def feedforwardIV(self, inputs: torch.Tensor) -> int:
+    def feedforwardIV(self, inputs: torch.Tensor, time: int) -> int:
         # If already fired, don't do anything
         if self.firingTime < float('Inf'):
             return 0
 
         # Update the input firing times
-        self.inputFiringTimes = torch.where(
-            self.time < self.IVInputFiringTimes,
-            self.time,
+        self.IVInputFiringTimes = torch.where(
+            (inputs == torch.ones(inputs.shape))
+            & (time < self.IVInputFiringTimes),
+            time,
             self.IVInputFiringTimes
         )
 
+        # Compute the weighted inputs
+        weightedInputs = inputs * self.IVInputWeights
+
         # Add to the body potential
-        self.bodyPotential += inputs.sum()
+        self.bodyPotential += weightedInputs.sum()
 
         # Check if fired
         if self.bodyPotential >= self.theta:
-            # Firing on the IV layer occurs at t=0
-            self.firingTime = 0
+            self.firingTime = time
             return 1
 
         return 0  # No firing yet OR firing already occurred
@@ -72,13 +87,17 @@ class Neuron:
 
         # Update the neighbor firing times
         self.neighborFiringTimes = torch.where(
-            self.time < self.neighborFiringTimes,
-            self.time,
+            (inputs == torch.ones(inputs.shape))
+            & (time < self.neighborFiringTimes),
+            time,
             self.neighborFiringTimes
         )
 
+        # Compute the weighted inputs
+        weightedInputs = inputs * self.neighborWeights
+
         # Add to the body potential
-        self.bodyPotential += inputs.sum()
+        self.bodyPotential += weightedInputs.sum()
 
         # Check if fired
         if self.bodyPotential >= self.theta:
@@ -103,8 +122,8 @@ class Neuron:
         # Only capture when input firing time <= neuron firing time
         #  and the neuron fired
         captureMatrix = torch.where(
-            self.IVInputFiringTimes <= self.firingTime
-            and self.firingTime < float('Inf'),
+            (self.IVInputFiringTimes <= self.firingTime)
+            & (self.firingTime < float('Inf')),
             captureMatrix,
             torch.zeros(self.numIVInputs)
         )
@@ -128,14 +147,16 @@ class Neuron:
         )
         # Only search when the input fired and the neuron didn't
         searchMatrix = torch.where(
-            self.IVInputFiringTimes < float('Inf')
-            and self.firingTime == float('Inf'),
+            (self.IVInputFiringTimes < float('Inf'))
+            & (self.firingTime == float('Inf')),
             searchMatrix,
             torch.zeros(self.numIVInputs)
         )
 
         # Apply STDP updates
-        self.IVInputWeights += captureMatrix - backoffMatrix + searchMatrix
+        self.IVInputWeights += captureMatrix.long()
+        self.IVInputWeights -= backoffMatrix.long()
+        self.IVInputWeights += searchMatrix.long()
 
         # Clamp the weights to [self.wMin, self.wMax]
         self.IVInputWeights = torch.clamp(
@@ -153,8 +174,8 @@ class Neuron:
         # Only capture when input firing time <= neuron firing time
         #  and the neuron fired
         captureMatrix = torch.where(
-            self.neighborFiringTimes <= self.firingTime
-            and self.firingTime < float('Inf'),
+            (self.neighborFiringTimes <= self.firingTime)
+            & (self.firingTime < float('Inf')),
             captureMatrix,
             torch.zeros(self.numNeighbors)
         )
@@ -178,14 +199,16 @@ class Neuron:
         )
         # Only search when the input fired and the neuron didn't
         searchMatrix = torch.where(
-            self.neighborFiringTimes < float('Inf')
-            and self.firingTime == float('Inf'),
+            (self.neighborFiringTimes < float('Inf'))
+            & (self.firingTime == float('Inf')),
             searchMatrix,
             torch.zeros(self.numNeighbors)
         )
 
         # Apply STDP updates
-        self.neighborWeights += captureMatrix - backoffMatrix + searchMatrix
+        self.neighborWeights += captureMatrix.long()
+        self.neighborWeights -= backoffMatrix.long()
+        self.neighborWeights += searchMatrix.long()
 
         # Clamp the weights to [self.wMin, self.wMax]
         self.neighborWeights = torch.clamp(
