@@ -56,8 +56,6 @@ def wattsStrogatz(n: int, p: float, k: int) -> torch.Tensor:
     watts_strogatz = torch.from_numpy(nx.to_numpy_array(G))
     return watts_strogatz
 
-# TODO: Barabasi-Albert
-
 
 def barabasiAlbert(n: int, m: int):
     """
