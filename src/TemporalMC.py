@@ -41,26 +41,6 @@ class TemporalMC:
         self.weights = torch.randint(
             self.wMin, self.wMax, (numInputs, numCells))
 
-        # # Create an numInputs x numCells matrix of weights
-        # # Random values between wmin and wmax
-        # self.weights = torch.randint(
-        #     self.wMin, self.wMax, (numInputs, numCells))
-
-        # # Initialize body potentials to 0
-        # self.bodyPotentials = torch.zeros(numCells)
-
-        # # Initialize dendritic (incoming) potentials
-        # # These are yet to enter the cell body and are used for 'ramping'
-        # self.dendritePotentials = torch.zeros(numCells, 2)  # 2 for min time
-
-        # # Stores firing times of the inputs - Used for STDP
-        # self.inputFiringTimes = torch.ones(numInputs) * float('Inf')
-
-        # # Stores the time in this quanta
-        # self.time = 0
-        # self.columnFiredTime = float('Inf')
-        # self.columnOutput = torch.zeros(numCells)
-
     def feedforward(self, inputs: torch.Tensor, time: int) -> torch.Tensor:
         # If already fired, don't do anything
         if self.columnFiredTime < float('Inf'):
