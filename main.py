@@ -31,17 +31,13 @@ def printGPUInformation() -> bool:
 # ===== Driver code ============================================================
 
 
-def main():
-    printGPUInformation()
-
+def runAndReportData(n: int):
     # * Parameters
-    # Meta
-    n = 10  # Number of training samples
     # Liquid
-    liquidCount = 150  # Number of liquid neurons
+    liquidCount = 150  # Number of neurons in the liquid
     tMax = 20  # Maximal time for the liquid to 'settle'
     # Neuron
-    wMaxExp = 3  # Exponent for the maximum weight
+    wMaxExp = 6  # Exponent for the maximum weight
     thetaScaleFactor = 0.1  # Scale factor for the theta (spiking cutoff) value
     uCaptureExp = 2  # Exponent for the capture time
     uBackoffExp = 7  # Exponent for the backoff time
@@ -49,21 +45,28 @@ def main():
     # Temporal Mini-Column
     outputCount = 10  # Number of output neurons (from data)
     outputTimeRes = 10  # Output resolution
-    # Seed Function
-    seedFunc = fullyConnected
-    seedName = "fullyConnected"
+    # Seed matrix
+    m = 100
+    enableMatrix = barabasiAlbert(liquidCount, m)
+    seedName = f'barabasiAlbertm{m}'
 
     # Filepath creation - For data and analysis
-    filepath = f'results/n={n}/seed={seedName}/stdpParams=C{uCaptureExp}B{uBackoffExp}S{uSearchExp}/tMax={tMax}/'
+    filepath = f'results/n={n}/seed={seedName}/weights=W{wMaxExp}T{int(thetaScaleFactor * 100)}stdpParams=C{uCaptureExp}B{uBackoffExp}S{uSearchExp}/tMax={tMax}/'
     # Create this directory if it doesn't exist
     if not os.path.exists(filepath):
         os.makedirs(filepath)
+
+    # Save the enable matrix as an image
+    plt.imshow(enableMatrix)
+    plt.colorbar()
+    plt.savefig(filepath + 'enableMatrix.png')
+    plt.close()
 
     # Create a new input vector
     iv = InputVector(outputTimeRes)
     # Create a new TLSM
     tlsm = TLSM(
-        seedFunc(liquidCount),
+        enableMatrix,
         liquidCount,
         wMaxExp,
         thetaScaleFactor,
@@ -81,6 +84,16 @@ def main():
         uBackoffExp,
         uSearchExp
     )
+
+    # Save the initial adjacency matrix for comparison as an image
+    initialAdjacencyMatrix = torch.zeros((liquidCount, liquidCount))
+    for i in range(liquidCount):
+        for j in range(liquidCount):
+            initialAdjacencyMatrix[i][j] = tlsm.neurons[i].neighborWeights[j]
+    plt.imshow(initialAdjacencyMatrix)
+    plt.colorbar()
+    plt.savefig(filepath + 'initialAdjacencyMatrix.png')
+    plt.close()
 
     # Save correctness values
     correctnessValues = []
@@ -143,11 +156,15 @@ def main():
         for j in range(liquidCount):
             adjacencyMatrix[i][j] = tlsm.neurons[i].neighborWeights[j]
 
+    # Convert to integers
+    adjacencyMatrix = adjacencyMatrix.long()
+
     # Export to CSV
     np.savetxt(
         filepath + 'adjacencyMatrix.csv',
-        adjacencyMatrix.numpy(),
-        delimiter=','
+        adjacencyMatrix.numpy().astype(int),
+        delimiter=',',
+        fmt="%d"
     )
 
     # Also export an image with the weights
@@ -155,6 +172,24 @@ def main():
     plt.colorbar()
     plt.savefig(filepath + 'adjacencyMatrix.png')
     plt.close()
+
+    # Also export a 'difference' image
+    differenceMatrix = adjacencyMatrix - initialAdjacencyMatrix
+    plt.imshow(differenceMatrix)
+    plt.colorbar()
+    plt.savefig(filepath + 'differenceMatrix.png')
+    plt.close()
+
+
+def main():
+    printGPUInformation()
+
+    liquidCount = 150
+
+    # Run for 10, 100, and 1000 for each network
+    networkSizes = [10, 100, 1000]
+    for networkSize in networkSizes:
+        runAndReportData(networkSize)
 
 
 if __name__ == '__main__':

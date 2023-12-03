@@ -52,6 +52,7 @@ def wattsStrogatz(n: int, p: float, k: int) -> torch.Tensor:
     p: Probability of an edge being rewired
     k: Number of edges in base lattice
     """
+
     G = nx.watts_strogatz_graph(n, k, p)
     watts_strogatz = torch.from_numpy(nx.to_numpy_array(G))
     return watts_strogatz
@@ -62,17 +63,13 @@ def barabasiAlbert(n: int, m: int):
     Creates a Barabasi-Albert random graph.
 
     n: Number of nodes
-    m: 
+    m: Number of edges to attach from a new node to existing nodes
     """
+
     G = nx.barabasi_albert_graph(n, m)
     barabasi_albert = torch.from_numpy(nx.to_numpy_array(G))
     return barabasi_albert
 
-
-# TODO: Exponential Random (Google ERGM)
-# TODO: Random Geometric Graph
-# TODO: Configuration
-# TODO: Random Key Graph
 
 # ===== Tester functions =======================================================
 
