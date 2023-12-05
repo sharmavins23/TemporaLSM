@@ -11,3 +11,6 @@ run, simply change the parameters in the `main.py` file and run it via
 `python3 main.py` or `python main.py`. It will automatically output results to
 the `results` folder for training with `n=10`, `n=100`, and `n=1000` training
 samples.
+
+Spreading models can be run via the `SpreadingModel.py` file. Simply change the
+parameters to which model's results you'd like to analyze, and run them.
