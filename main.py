@@ -46,12 +46,25 @@ def runAndReportData(n: int):
     outputCount = 10  # Number of output neurons (from data)
     outputTimeRes = 10  # Output resolution
     # Seed matrix
-    m = 100
-    enableMatrix = barabasiAlbert(liquidCount, m)
-    seedName = f'barabasiAlbertm{m}'
+    # ! Change these to change the seed
+    # enableMatrix = fullyConnected(liquidCount)
+    # seedName = 'fullyConnected'
+
+    # p = 0.1
+    # enableMatrix = erdosRenyi(liquidCount, p)
+    # seedName = f'erdosRenyip{p}'
+
+    # m = 5
+    # enableMatrix = barabasiAlbert(liquidCount, m)
+    # seedName = f'barabasiAlbertm{m}'
+
+    p = 0.5
+    k = 50
+    enableMatrix = wattsStrogatz(liquidCount, p, k)
+    seedName = f'wattsStrogatzk{k}p{p}'
 
     # Filepath creation - For data and analysis
-    filepath = f'results/n={n}/seed={seedName}/weights=W{wMaxExp}T{int(thetaScaleFactor * 100)}stdpParams=C{uCaptureExp}B{uBackoffExp}S{uSearchExp}/tMax={tMax}/'
+    filepath = f'results/n={n}/seed={seedName}/'
     # Create this directory if it doesn't exist
     if not os.path.exists(filepath):
         os.makedirs(filepath)
