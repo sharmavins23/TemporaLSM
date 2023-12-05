@@ -1,31 +1,22 @@
 \section{Approach} \label{sec:Approach}
 
-\subsection{Datasets}
+\subsection{Dataset}
 
-Throughout our project, we apply a few datasets and analyze their generated
-graphs. The datasets we use are, relatively speaking, orthogonal to each other -
-They solve fundamentally different problems. As such, any similarities may be in
-response to parameter changes, the network structure, or 'problem-solving'
-itself.
+Throughout our project we apply the MNIST dataset \cite{MNIST Dataset}. This
+dataset requires the tools of image recognition and classification, and is very
+popular in generic machine learning projects.
 
-Our first benchmark is the MNIST dataset \cite{MNIST Dataset}. This dataset
-requires the tools of image recognition and classification, and is popular in
-machine learning projects.
-
-From there, we look at the Numenta Anomaly Benchmark dataset \cite{NAB Dataset}.
-Anomaly detection is a problem that temporal neural networks generally
-specialize in, so we analyze these as well.
-
-Finally, we generate and analyze a network for the NFL Big Data Bowl dataset
-\cite{NFL Dataset}. This network would perform prediction for the next 'play'
-(e.g. pass or rush) based on the previous play's characteristics.
+As we are utilizing a controlled dataset for all models, any similarities or
+differences in constructed graph topologies are fundamentally responses to the
+individual parameter changes, the network structure, or the act of
+'problem-solving' itself.
 
 \subsection{Assumptions}
 
-While we vary a variety of parameters (such as neuron activation function), we
-assume that the underlying temporal neurons function as a strong analogue for
-biological processes. This assumption allows us to generalize our results to
-neural basis of cognition rather than design of artificial neural networks.
+While we vary a variety of parameters, we assume that the underlying temporal
+neurons function as a strong analogue for biological processes. This assumption
+allows us to generalize our results to neural basis of cognition rather than
+design of artificial neural networks.
 
 \subsection{Analysis}
 
@@ -43,5 +34,5 @@ Through these network features, and more, we aim to understand the following:
 
 \begin{enumerate}
     \item Why did the network configure itself the way it did?
-    \item How do networks of different problems compare to each other?
+    \item How do networks of different configurations compare to each other?
 \end{enumerate}

@@ -2,27 +2,36 @@
 
 Our project presents a framework for generating and analyzing self-organizing
 neural networks in order to derive insight into the neural basis for cognition
-through the orientation of the problem. Through analyzing the networks, we hope
-to uncover similarities and understand how these structures may organize and
-train to particular problems.
+through the orientation of the problem. Through analyzing the networks, we
+uncovered interesting insights to the strength of inhibition in network design,
+as well as the importance of the network's ability to be resilient in the face
+of changing input data. Our work acts as a base to inspire particular design
+choices for liquid state machines and temporal neural network design in general.
 
-\subsection{Future Work}
+\subsection{Future Work} \label{sec:Future Work}
 
-By the end of November, we plan to complete our network generation framework,
-alongside a number of other seed networks and neuron types. We also plan to
-generate and analyze the generated MNIST network \cite{MNIST Dataset} as well
-as the NFL big data bowl network \cite{NFL Dataset}.
+In future renditions of this work, we would like to explore a vast variety of
+different network parameters and configurations, starting with the model of the
+neuron. More complicated neuronal designs (discussed in
+\ref{sec:Temporal Neuron}) may interact with STDP rules differently.
 
-TODO: Pos/Neg?
+Other STDP models and models for Hebbian theory implementations may also be
+explored. In particular, our project demonstrated to us the value and importance
+of inhibition in biologically-plausible networks - As such, we are interested to
+see if astrocyte modulation of synaptic weights or other forms of inhibition
+would lead to more stable and accurate networks.
+
+Finally, exploring the effects of differing networks on different datasets would
+help draw similarities and differences between learning in the general sense.
+Our structure is currently extensible to a variety of machine learning problems,
+so picking relatively orthogonal problems could offer interesting insight to how
+these problems may be solved in the brain.
 
 \subsection{Contribution}
 
-For this milestone, Vins focused on the input vector and SNL neuron
-implementation. In contrast, Anand focused on the initial graph organization and
-seed matrix generation. Both teammates contributed to the overall design of the
-TLSM generator framework, and both teammates will contribute to design and
-analysis of the MNIST network \cite{MNIST Dataset}.
-
-In the future, Anand will be responsible for the design and analysis of an NFL
-data network \cite{NFL Dataset}, and Vins will be responsible for the NAB
-network \cite{NAB Dataset}.
+Throughout the semester, Vins focused on the implementation of the temporal
+liquid state machine, while Anand focused on the construction and implementation
+of the input vector and initial seed configuration networks. Both teammates
+contributed to the overall design and analysis of the generated networks. Anand
+focused on the information walk analysis, while Vins focused on analyzing the
+network configurations and adjacency matrices.

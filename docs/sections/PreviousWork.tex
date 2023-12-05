@@ -1,6 +1,16 @@
 \section{Previous Work} \label{sec:PreviousWork}
 
-In this section we examine inspirations for our approach, and potential choices.
+In this section we examine inspirations for our approach, as well as motivations
+for our choices. We pick out five papers in particular that we draw from in our
+implementation.
+
+The first paper, \cite{Macrocolumn}, demonstrates the alternate route of
+pursuing such a cortical column circuit. The second paper \cite{TNN} describes
+the fundamental building blocks and neuronal models for either of these
+approaches. The third paper \cite{Encoding} delves into the encoding of data
+fitting for these models. The fourth \cite{LSM} and fifth \cite{LSM Constraints}
+papers combine to describe the reservoir computing model, as well as some
+particulars we test throughout our implementation.
 
 \subsection{Smith (2023)}
 
@@ -57,4 +67,6 @@ Hazan and Manevitz \cite{LSM Constraints} propose in their paper that the LSM
 previously defined by Maass is not a good model due to its network's robustness,
 and that a more robust model would better represent the brain. They draw a new
 conclusion towards small-world assumptions in graph topology being key to
-solving this problem. We re-test this hypothesis in our work.
+solving this problem. We aim to test this hypothesis throughout our work, and
+pay close attention to the topologies constructed out of small-world model
+configurations for our reservoirs.
